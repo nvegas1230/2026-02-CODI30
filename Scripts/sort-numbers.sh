@@ -4,12 +4,14 @@
 declare -a numberList
 mainLoop=true
 
-read -p "Input 10 numbers (seperated by spaces): " numbers
+read -p "Input any amount of numbers (seperated by spaces, any letters will be ignored): " numbers
 read -p "Input sort method ( bubble / selection ): " sortMethod
 echo
 
 for number in $numbers; do
-	numberList+=($number)
+	if [[ $number =~ ^[+-]?[0-9]*\.?[0-9]+$ ]]; then
+		numberList+=($number)
+	fi
 done
 
 listLength=${#numberList[@]}
@@ -55,6 +57,8 @@ while $mainLoop; do
 			mainLoop=false
 		fi
 	elif [[ "$sortMethod" == "selection" ]]; then
+		echo "This sorting method is not finished yet, try 'bubble' instead."
+		mainLoop=false
 		# USING SELECTION SORT
 		# Selection sort checks the current number and finds the lowest number in the list; if the current number is higher, it swaps them.
 		# This is repeated until a run through of the list happens without swapping any numbers
@@ -62,5 +66,6 @@ while $mainLoop; do
 done
 
 echo
+echo "Initial list: $numbers"
 echo "Sorted list: ${numberList[@]}"
 echo "Total swaps made: $totalSwaps"
